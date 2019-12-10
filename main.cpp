@@ -121,11 +121,12 @@ int main()
     Uin = 3.3; //käyttöjännite
 
     resistor1 = 1000; //lämpötilan sarjavastus ohmeina
-    resistor2 = 830000; //kosteuden sarjavastus kohmeina
+    resistor2 = 830000; //kosteuden sarjavastus ohmeina
+    //resistor2 = 830; //kosteuden sarjavastus kohmeina
 
     PowerToMoisture = 0;
 
-    pc.printf("kosteusresistorin alustus: %f", resistorMoist);
+    //pc.printf("kosteusresistorin alustus: %f", resistorMoist);
 
 //timer.start();
 //timer.reset();
@@ -147,32 +148,106 @@ int main()
 
                MeasureMoisture();
 
+                //debuggausta
+               //temperature = -10.0;
+               //moistureAvg2 =80;
+
+//************************Tulosteet Raspberrylle********************
+             /*  if(temperature < -99.9 )
+               {
+
+                   pc.printf("-99.9"); //lämpötila
+
+               }else
+
+                   if(temperature > -99.9 && temperature <= -10)
+                   {
+
+                       pc.printf("%.1lf", temperature); //lämpötila
+
+                   }else
+
+                   if(temperature < 0 && temperature > -10)
+                   {
+
+                       pc.printf("%+5.1lf", temperature); //lämpötila
+
+                   }else
 
 
 
-               //Tulosteet
+
+
+
+                if(temperature >= 0 && temperature < 10)
+                {
+
+                    pc.printf("%.1lf", temperature); //lämpötila
+
+                }else
+
+                    if(temperature >= 10 && temperature < 100)
+                    {
+
+                        pc.printf("+%.1lf", temperature); //lämpötila
+
+                    }else
+
+                        if(temperature > 99.9)
+                        {
+                            //Tulosteet Raspberrylle
+                            pc.printf("99.9"); //lämpötila
+
+                        }else
+
+*/
+
+
+
+               pc.printf("%+5.1lf", temperature); //LÄMPÖTILA
+
+
+
+
+                if(moistureAvg2 < 20)
+                {
+                    pc.printf("m20.0"); //
+                    //pc.printf("\n");
+                }
+                else
+                if(moistureAvg2 > 90)
+                {
+                    pc.printf("m90.0"); //
+                    //pc.printf("\n");
+                }
+                else
+                {
+                    pc.printf("m%.1lf", moistureAvg2);
+                    //pc.printf("\n");
+                }
+
+               //Debuggausta
                //pc.printf("%f ", rawDataTemp);
 
                //pc.printf("%f ", UoutTemp);
 
-               pc.printf("temperature sensor resistance %f ", resistorTemp);
-               pc.printf("\n");
+               //pc.printf("temperature sensor resistance %f ", resistorTemp);
+               //pc.printf("\n");
 
 
-               pc.printf("temperature: %f ", temperature);
-               pc.printf("\n");
 
-               pc.printf("moisture: %f ", moisture);
-               pc.printf("\n");
+               //pc.printf("\n");
 
-               pc.printf("moistureAvg: %f ", moistureAvg1);
-               pc.printf("\n");
+               //pc.printf("moisture: %f ", moisture);
+               //pc.printf("\n");
 
-               pc.printf("moistureAvg: %f ", moistureAvg2);
-               pc.printf("\n");
+               //pc.printf("moistureAvg: %f ", moistureAvg1);
+               //pc.printf("\n");
+
+
 
                //rivin vaihto
-               pc.printf("\r\n");
+               //pc.printf("\r\n");
 
               // wait(0.02);  //Ei tarvi odottaa jos pikavauhtia etsitään
 
@@ -249,14 +324,14 @@ void CalculateResistanceMoist()
 
 
 
-    pc.printf("moisture sensor resistance: %f ohm", resistorMoist);
-    pc.printf("\n");
+    //pc.printf("moisture sensor resistance: %f ohm", resistorMoist);
+    //pc.printf("\n");
 
-    //muutetaan kilo ohmeiksi taulukkoa varten
+    //muutetaan kilo-ohmeiksi taulukkoa varten
     resistorMoist = resistorMoist/1000;
 
-    pc.printf("moisture sensor resistance: %f kOhm", resistorMoist);
-    pc.printf("\n");
+    //pc.printf("moisture sensor resistance: %f kOhm", resistorMoist);
+    //pc.printf("\n");
 
 
 }
@@ -312,8 +387,8 @@ void CalculateVirtualArrayForMoisture()
     {
         virtualArrayForMoisture[i] = moistureArray[i][columLower] * weightTempLower + moistureArray[i][columHigher] * weightTempHigher;
 
-        pc.printf("virtualArray %d = %.2f", i, virtualArrayForMoisture[i]);
-        pc.printf("\n");
+        //pc.printf("virtualArray %d = %.2f", i, virtualArrayForMoisture[i]);
+        //pc.printf("\n");
 
     }
 }
@@ -328,7 +403,7 @@ void CalculateVirtualRowNumber()
     if(resistorMoist >= virtualArrayForMoisture[0] && vRNcalculated == false)
     {
         virtualRowNumber = 0;
-        pc.printf("virtual row number pitäs olla 0 mutta on %.f", virtualRowNumber);
+        //pc.printf("virtual row number pitäs olla 0 mutta on %.f", virtualRowNumber);
 
         vRNcalculated = true;
     }//else
@@ -336,7 +411,7 @@ void CalculateVirtualRowNumber()
     if(resistorMoist <= virtualArrayForMoisture[14] && vRNcalculated == false)
     {
         virtualRowNumber = 14;
-        pc.printf("virtual row number pitäs olla 14 mutta on %.f", virtualRowNumber);
+        //pc.printf("virtual row number pitäs olla 14 mutta on %.f", virtualRowNumber);
         vRNcalculated = true;
     }//else
 
@@ -372,9 +447,9 @@ void CalculateVirtualRowNumber()
         virtualRowNumber =  rowLower * virtualWeightResistanceLow + rowHigher * virtualWeightResistanceHigh;
     }
 
-      pc.printf("virtual row number: %.2f", virtualRowNumber);
-      pc.printf("\n");
-      pc.printf("\n");
+      //pc.printf("virtual row number: %.2f", virtualRowNumber);
+      //pc.printf("\n");
+      //pc.printf("\n");
 
       vRNcalculated = false;
 
@@ -407,8 +482,8 @@ void CalculateMoistureAverage()
              moistureAvg2Sum = moistureAvg2Sum - moistureAvg2Array[avgCounter];
 
             moistureAvg2Array[avgCounter] = moisture;
-             pc.printf("lisättiin paikaan %d", avgCounter);
-             pc.printf("\n");
+             //pc.printf("lisättiin paikaan %d", avgCounter);
+             //pc.printf("\n");
 
 
             moistureAvg2Sum = moistureAvg2Sum + moisture;
